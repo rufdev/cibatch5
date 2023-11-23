@@ -38,14 +38,58 @@ class Home extends BaseController
         // $builder->selectCount('id');
         // $query = $builder->get(); // SELECT COUNT(id) FROM authors
 
-        $builder->select("posts.*, CONCAT(authors.first_name, ' ', authors.last_name) as author_name");
-        $builder->join('posts', 'posts.author_id = authors.id');
-        $builder->where('posts.id',1);
-        $query = $builder->get();
-        
-       
-
+        // $builder->select("posts.*, CONCAT(authors.first_name, ' ', authors.last_name) as author_name");
+        // $builder->join('posts', 'posts.author_id = authors.id');
+        // $builder->where('posts.id',1);
+        // $query = $builder->get();
         //SELECT * FROM authors INNER JOIN posts ON posts.author_id = authors.id WHERE posts.id = 1;
+
+        // $builder->select('*');
+        // $builder->where('first_name', 'Amanda');
+        // $query = $builder->get();
+
+        //SELECT * FROM authors WHERE first_name = 'Amanda' AND last_name = 'Bartoletti';
+
+        // $builder->select('*');
+        // $builder->where('first_name', 'Amanda');
+        // $builder->where('last_name', 'Bartoletti');
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->where('id', 1);
+        // $builder->orWhere('id', 2);
+        // $query = $builder->get();
+
+
+        // $builder->select('*');
+        // $builder->where('id >', 1);
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->where('id !=', 2); //<>
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->where('id <=', 2); 
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->whereIn('id',[1,2,3]); 
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->like('first_name','Ama');
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->like('first_name','Ama');
+        // $builder->orLike('last_name','Bart');
+        // $query = $builder->get();
+        
+
+
+
+
 
         $result = $query->getResult(); // array of objects
 
