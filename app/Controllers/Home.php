@@ -85,7 +85,48 @@ class Home extends BaseController
         // $builder->like('first_name','Ama');
         // $builder->orLike('last_name','Bart');
         // $query = $builder->get();
-        
+
+        // $builder->select('*');
+        // $builder->orderBy('id','DESC');
+        // $query = $builder->get();
+
+        // $builder->select('*');
+        // $builder->groupBy('first_name');
+        // $query = $builder->get();
+
+
+        // $data = [
+        //     'first_name' => 'RUFINO JOHN',
+        //     'last_name' => 'AGUILAR',
+        //     'email' => 'aguilarufino@gmail.com',
+        //     'birthdate' => '1990-01-01',
+        //     'added' => date('Y-m-d H:i:s')
+        // ];
+
+        // $builder->insert($data);
+
+        // $builder->select('*');
+        // $builder->where('first_name', "RUFINO JOHN");
+        // $query = $builder->get();
+
+        //  $data = [
+        //     'first_name' => 'RUFINO',
+        // ];
+
+        // $builder->where('id', 101);
+        // $builder->update($data);
+
+        // $builder->select('*');
+        // $builder->where('id', 101);
+        // $query = $builder->get();
+
+        // $builder->where('id', 101);
+        // $builder->delete();
+
+        // $builder->select('*');
+        // $builder->where('id', 101);
+        // $query = $builder->get();
+
 
 
 
