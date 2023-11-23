@@ -104,7 +104,6 @@ class Home extends BaseController
         // ];
 
         // $builder->insert($data);
-
         // $builder->select('*');
         // $builder->where('first_name', "RUFINO JOHN");
         // $query = $builder->get();
@@ -132,9 +131,9 @@ class Home extends BaseController
 
 
 
-        $result = $query->getResult(); // array of objects
+        // $result = $query->getResult(); // array of objects
 
-        return json_encode($result);
+        // return json_encode($result);
 
 
 
