@@ -38,6 +38,14 @@ class Home extends BaseController
         // $builder->selectCount('id');
         // $query = $builder->get(); // SELECT COUNT(id) FROM authors
 
+        $builder->select("posts.*, CONCAT(authors.first_name, ' ', authors.last_name) as author_name");
+        $builder->join('posts', 'posts.author_id = authors.id');
+        $builder->where('posts.id',1);
+        $query = $builder->get();
+        
+       
+
+        //SELECT * FROM authors INNER JOIN posts ON posts.author_id = authors.id WHERE posts.id = 1;
 
         $result = $query->getResult(); // array of objects
 
