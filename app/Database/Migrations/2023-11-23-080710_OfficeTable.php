@@ -41,6 +41,6 @@ class OfficeTable extends Migration
 
     public function down()
     {
-  
+        $this->forge->dropTable('offices');
     }
 }
