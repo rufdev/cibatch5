@@ -9,7 +9,10 @@ class Home extends BaseController
         $db = \Config\Database::connect();
         $builder = $db->table('authors');
 
-        $query = $builder->get(); // SELECT * FROM authors
+        // $query = $builder->get(); // SELECT * FROM authors
+
+        $query = $builder->getWhere(['id' => 1]); // SELECT * FROM authors WHERE id = 1
+
 
         $result = $query->getResult(); // array of objects
 
