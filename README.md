@@ -8,12 +8,19 @@ METHOD 1
  app.baseURL = 'http://localhost/ciapp'
 
  database.default.hostname = localhost
+ 
  database.default.database = ciapp
+ 
  database.default.username = root
+ 
  database.default.password = 
+ 
  database.default.DBDriver = MySQLi
+ 
  database.default.DBPrefix =
+ 
  database.default.port = 3306
+ 
 
 4. Run the following commands on your terminal
  - composer update
