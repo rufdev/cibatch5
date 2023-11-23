@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use CodeIgniter\Database\RawSql;
+
 class Home extends BaseController
 {
     public function index(): string
@@ -18,9 +19,24 @@ class Home extends BaseController
 
         // $query = $builder->select('id, CONCAT(first_name, " ", last_name) as full_name')->get(); // SELECT id, CONCAT(first_name, " ", last_name) as full_name FROM authors)
 
-        $sql = "CONCAT(first_name, ' ', last_name) as full_name";
-       $builder->select(new RawSql($sql));
-       $query = $builder->get(); // SELECT CONCAT(first_name, ' ', last_name) as full_name FROM authors
+        //     $sql = "CONCAT(first_name, ' ', last_name) as full_name";
+        //    $builder->select(new RawSql($sql));
+        //    $query = $builder->get(); // SELECT CONCAT(first_name, ' ', last_name) as full_name FROM authors
+
+        // $builder->selectMax('id');
+        // $query = $builder->get(); // SELECT MAX(id) FROM authors
+
+        // $builder->selectMin('id');
+        // $query = $builder->get(); // SELECT MIN(id) FROM authors
+
+        // $builder->selectAvg('id');
+        // $query = $builder->get(); // SELECT AVG(id) FROM authors
+
+        // $builder->selectSum('id');
+        // $query = $builder->get(); // SELECT SUM(id) FROM authors
+
+        // $builder->selectCount('id');
+        // $query = $builder->get(); // SELECT COUNT(id) FROM authors
 
 
         $result = $query->getResult(); // array of objects
