@@ -70,7 +70,26 @@ class OfficeController extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $officeModel = new \App\Models\Office();
+         $data = $this->request->getJSON();
+
+         if (!$officeModel->validate($data)){
+            $response = array(
+                'status' => 'error',
+                'message' => $officeModel->errors()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_NOT_MODIFIED)->setJSON($response);
+         }
+         
+
+         $officeModel->update($id,$data);
+         $response = array(
+            'status' => 'success',
+            'message' => "Office updated successfully"
+         );
+
+         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
     }
 
     /**
