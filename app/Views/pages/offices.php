@@ -87,8 +87,8 @@
 
 <?= $this->section('pagescript') ?>
 <script>
-    $(function(){
-        $('form').submit(function(e){
+    $(function() {
+        $('form').submit(function(e) {
             e.preventDefault();
 
             let formdata = $(this).serializeArray().reduce(function(obj, item) {
@@ -98,7 +98,7 @@
 
             let jsondata = JSON.stringify(formdata);
 
-            if(this.checkValidity()){
+            if (this.checkValidity()) {
                 //create
                 $.ajax({
                     url: "<?= base_url('offices'); ?>",
@@ -115,11 +115,13 @@
                         $('#modalID').modal('hide');
                         table.ajax.reload();
                     },
-                    error: function (reponse){
+                    error: function(response) {
+                        let parsedresponse = JSON.parse(response.responseText);
+                        
                         $(document).Toasts('create', {
                             class: 'bg-danger',
                             title: 'Error',
-                            body: JSON.stringify(response.message),
+                            body: JSON.stringify(parsedresponse.message),
                             autohide: true,
                             delay: 3000
                         });
@@ -166,6 +168,21 @@
         ]
 
 
+    });
+
+    $(document).ready(function() {
+        'use strict';
+
+        let form = $(".needs-validation");
+        form.each(function() {
+            $(this).on('submit', function(e) {
+                if (this.checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        });
     });
 </script>
 <?= $this->endSection() ?>
