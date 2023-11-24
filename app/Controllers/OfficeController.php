@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\HTTP\Response;
+
 class OfficeController extends ResourceController
 {
     /**
@@ -25,7 +26,7 @@ class OfficeController extends ResourceController
     {
         $officeModel = new \App\Models\Office();
         $data = $officeModel->find($id);
-        if(!$data){
+        if (!$data) {
             return $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
         }
 
@@ -40,26 +41,26 @@ class OfficeController extends ResourceController
      */
     public function create()
     {
-         $officeModel = new \App\Models\Office();
-         $data = $this->request->getPost();
+        $officeModel = new \App\Models\Office();
+        $data = $this->request->getPost();
 
-         if (!$officeModel->validate($data)){
+        if (!$officeModel->validate($data)) {
             $response = array(
                 'status' => 'error',
                 'message' => $officeModel->errors()
             );
 
             return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
-         }
-         
+        }
 
-         $officeModel->insert($data);
-         $response = array(
+
+        $officeModel->insert($data);
+        $response = array(
             'status' => 'success',
             'message' => "Office created successfully"
-         );
+        );
 
-         return $this->response->setStatusCode(Response::HTTP_CREATED)->setJSON($response);
+        return $this->response->setStatusCode(Response::HTTP_CREATED)->setJSON($response);
     }
 
 
@@ -71,25 +72,25 @@ class OfficeController extends ResourceController
     public function update($id = null)
     {
         $officeModel = new \App\Models\Office();
-         $data = $this->request->getJSON();
+        $data = $this->request->getJSON();
 
-         if (!$officeModel->validate($data)){
+        if (!$officeModel->validate($data)) {
             $response = array(
                 'status' => 'error',
                 'message' => $officeModel->errors()
             );
 
             return $this->response->setStatusCode(Response::HTTP_NOT_MODIFIED)->setJSON($response);
-         }
-         
+        }
 
-         $officeModel->update($id,$data);
-         $response = array(
+
+        $officeModel->update($id, $data);
+        $response = array(
             'status' => 'success',
             'message' => "Office updated successfully"
-         );
+        );
 
-         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
     }
 
     /**
@@ -100,21 +101,23 @@ class OfficeController extends ResourceController
     public function delete($id = null)
     {
         $officeModel = new \App\Models\Office();
+        try {
 
-        if ($officeModel->delete($id)){
+            if ($officeModel->delete($id)) {
+                $response = array(
+                    'status' => 'success',
+                    'message' => "Office deleted successfully"
+                );
+
+                return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+            }
+        } catch (\Exception $e) {
             $response = array(
-                'status' => 'success',
-                'message' => "Office deleted successfully"
-             );
-    
-             return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+                'status' => 'error',
+                'message' => $e->getMessage()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR)->setJSON($response);
         }
-
-        $response = array(
-            'status' => 'error',
-            'message' => "Office not found"
-         );
-
-         return $this->response->setStatusCode(Response::HTTP_NOT_FOUND)->setJSON($response);
     }
 }
