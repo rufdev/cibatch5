@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\HTTP\Response;
+
 class TicketController extends ResourceController
 {
     /**
@@ -13,7 +14,10 @@ class TicketController extends ResourceController
      */
     public function index()
     {
-        return view('pages/tickets');
+        $officeModel = new \App\Models\Office();
+        $data['offices'] = $officeModel->findAll();
+
+        return view('pages/tickets', $data);
     }
 
     /**
@@ -32,6 +36,70 @@ class TicketController extends ResourceController
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($data);
     }
 
+    public function list()
+    {
+        $ticketModel = new \App\Models\Ticket();
+        $postData = $this->request->getPost();
+
+        $draw = $postData['draw'];
+        $start = $postData['start'];
+        $rowperpage = $postData['length'];
+        $searchValue = $postData['search']['value'];
+        $sortby = $postData['order'][0]['column'];
+        $sortdir = $postData['order'][0]['dir'];
+        $sortcolumn = $postData['columns'][$sortby]['data'];
+
+        // Total number of records
+        $totalRecords = $ticketModel->select('id')->countAllResults();
+
+        // Total number of records with filtering
+        $totalRecordwithFilter = $ticketModel->select('tickets.id')
+            ->join('offices', 'offices.id = tickets.office_id')
+            ->like('tickets.first_name', $searchValue)
+            ->orLike('tickets.last_name', $searchValue)
+            ->orLike('offices.code', $searchValue)
+            ->orLike('offices.name', $searchValue)
+            ->orLike('tickets.description', $searchValue)
+            ->orderBy($sortcolumn, $sortdir)
+            ->countAllResults();
+
+        // Fetch records
+        $records = $ticketModel->select('tickets.*, CONCAT(tickets.first_name, " ", tickets.last_name) as full_name, offices.name as office_name')
+            ->join('offices', 'offices.id = tickets.office_id')
+            ->like('tickets.first_name', $searchValue)
+            ->orLike('tickets.last_name', $searchValue)
+            ->orLike('offices.code', $searchValue)
+            ->orLike('offices.name', $searchValue)
+            ->orLike('tickets.description', $searchValue)
+            ->orderBy($sortcolumn, $sortdir)
+            ->findAll($rowperpage, $start);
+
+        $data = array();
+
+        foreach ($records as $record) {
+            $data[] = array(
+                'id' => $record['id'],
+                'state' => $record['state'],
+                'severity' => $record['severity'],
+                'full_name' => $record['full_name'],
+                'office_name' => $record['office_name'],
+                'description' => $record['description'],
+                'created_at' => $record['created_at'],
+            );
+        }
+
+        // Response
+        $response = array(
+            "draw" => intval($draw),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => $totalRecordwithFilter,
+            "data" => $data
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+    }
+
+
 
     /**
      * Create a new resource object, from "posted" parameters
@@ -41,8 +109,8 @@ class TicketController extends ResourceController
     public function create()
     {
         $ticketModel = new \App\Models\Ticket();
-        $data = $this->request->getPost();
-
+        $data = $this->request->getJSON();
+        $data->state = 'PENDING';
         if (!$ticketModel->validate($data)) {
             $response = array(
                 'status' => 'error',

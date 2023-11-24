@@ -38,8 +38,8 @@ class Ticket extends Model
         'office_id' => 'required|numeric',
         'state' => 'required',
         'severity' => 'required',
-        'description' => 'required|min_length[3]',
-        'remarks' => 'min_length[3]'
+        'description' => 'required|min_length[3]'
+      
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
@@ -56,11 +56,4 @@ class Ticket extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    protected $returnTypeRelations = 'array';
-    protected $belongsTo = [
-        'office' => [
-            'model' => 'App\Models\Office',
-            'foreign_key' => 'office_id'
-        ]
-    ];
 }
