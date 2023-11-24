@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-12">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalID">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalID" onclick="clearform()">
                     Add Office
                 </button>
             </div>
@@ -117,6 +117,7 @@
                             });
                             $('#modalID').modal('hide');
                             table.ajax.reload();
+                            clearform();
                         },
                         error: function(response) {
                             let parsedresponse = JSON.parse(response.responseText);
@@ -145,6 +146,7 @@
                             });
                             $('#modalID').modal('hide');
                             table.ajax.reload();
+                            clearform();
                         },
                         error: function(response) {
                             let parsedresponse = JSON.parse(response.responseText);
@@ -283,5 +285,11 @@
             });
         });
     });
+    
+    function clearform() {
+        $("#id").val("");
+        $("#code").val("");
+        $("#name").val("");
+    }
 </script>
 <?= $this->endSection() ?>
