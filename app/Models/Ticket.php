@@ -39,7 +39,7 @@ class Ticket extends Model
         'state' => 'required',
         'severity' => 'required',
         'description' => 'required|min_length[3]',
-        'remarks' => 'required|min_length[3]'
+        'remarks' => 'min_length[3]'
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
