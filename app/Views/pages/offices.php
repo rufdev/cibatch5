@@ -46,6 +46,7 @@
                     <div class="modal-body">
                         <form class="needs-validation" novalidate>
                             <div class="card-body">
+                                <input type="hidden" id="id" name="id">
                                 <div class="form-group">
                                     <label for="code">Code</label>
                                     <input type="text" class="form-control" id="code" name="code" placeholder="Enter Code" required>
@@ -98,35 +99,69 @@
 
             let jsondata = JSON.stringify(formdata);
 
+
             if (this.checkValidity()) {
-                //create
-                $.ajax({
-                    url: "<?= base_url('offices'); ?>",
-                    type: "POST",
-                    data: jsondata,
-                    success: function(response) {
-                        $(document).Toasts('create', {
-                            class: 'bg-success',
-                            title: 'Success',
-                            body: JSON.stringify(response.message),
-                            autohide: true,
-                            delay: 3000
-                        });
-                        $('#modalID').modal('hide');
-                        table.ajax.reload();
-                    },
-                    error: function(response) {
-                        let parsedresponse = JSON.parse(response.responseText);
-                        
-                        $(document).Toasts('create', {
-                            class: 'bg-danger',
-                            title: 'Error',
-                            body: JSON.stringify(parsedresponse.message),
-                            autohide: true,
-                            delay: 3000
-                        });
-                    }
-                });
+
+                if (!formdata.id) {
+                    $.ajax({
+                        url: "<?= base_url('offices'); ?>",
+                        type: "POST",
+                        data: jsondata,
+                        success: function(response) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                body: JSON.stringify(response.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $('#modalID').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error: function(response) {
+                            let parsedresponse = JSON.parse(response.responseText);
+
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                body: JSON.stringify(parsedresponse.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "<?= base_url('offices'); ?>/" + formdata.id,
+                        type: "PUT",
+                        data: jsondata,
+                        success: function(response) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                body: JSON.stringify(response.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $('#modalID').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error: function(response) {
+                            let parsedresponse = JSON.parse(response.responseText);
+
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                body: JSON.stringify(parsedresponse.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                }
+
+
+
             }
 
         })
@@ -167,6 +202,34 @@
             }
         ]
 
+
+    });
+
+    $(document).on('click', '#editBtn', function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        $.ajax({
+            url: "<?= base_url('offices'); ?>/" + id,
+            type: "GET",
+            success: function(response) {
+                $('#modalID').modal('show');
+                $("#id").val(response.id);
+                $("#code").val(response.code);
+                $("#name").val(response.name);
+            },
+            error: function(response) {
+                let parsedresponse = JSON.parse(response.responseText);
+
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Error',
+                    body: JSON.stringify(parsedresponse.message),
+                    autohide: true,
+                    delay: 3000
+                });
+            }
+        })
 
     });
 
