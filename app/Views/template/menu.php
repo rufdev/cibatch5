@@ -66,12 +66,14 @@
                         <p>Tickets</p>
                     </a>
                 </li>
+                <?php if(auth()->user()->inGroup('admin')): ?>
                 <li class="nav-item">
                     <a href="<?= base_url('offices') ?>" class="nav-link">
                         <i class="fas fa-briefcase nav-icon"></i>
                         <p>Offices</p>
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
         </nav>
 

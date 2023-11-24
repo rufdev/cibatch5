@@ -14,14 +14,14 @@ $routes->set404Override();
 
 $routes->get('/', 'Home::index');
 
-$routes->get('dashboard', 'DashboardController::index');
+$routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
 
-$routes->post('offices/list', 'OfficeController::list');
-$routes->post('tickets/list', 'TicketController::list');
+$routes->post('offices/list', 'OfficeController::list', ['filter' => 'groupfilter:admin']);
+$routes->post('tickets/list', 'TicketController::list', ['filter' => 'auth']);
 
-$routes->resource('offices',['controller' => 'OfficeController', 'except' => 'new,edit', 'filter' => 'auth']);
+$routes->resource('offices',['controller' => 'OfficeController', 'except' => 'new,edit', 'filter' => 'groupfilter:admin']);
 
-$routes->resource('tickets',['controller' => 'TicketController','except' => 'new,edit']);
+$routes->resource('tickets',['controller' => 'TicketController','except' => 'new,edit', 'filter' => 'auth']);
 
 
 
