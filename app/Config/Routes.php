@@ -14,9 +14,9 @@ $routes->set404Override();
 
 $routes->get('/', 'Home::index');
 
-$routes->resource('offices',['controller' => 'OfficeController']);
+$routes->resource('offices',['controller' => 'OfficeController', 'except' => 'new,edit']);
 
-$routes->resource('tickets',['controller' => 'TicketController']);
+$routes->resource('tickets',['controller' => 'TicketController','except' => 'new,edit']);
 
 
 
