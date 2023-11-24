@@ -99,6 +99,22 @@ class OfficeController extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        $officeModel = new \App\Models\Office();
+
+        if ($officeModel->delete($id)){
+            $response = array(
+                'status' => 'success',
+                'message' => "Office deleted successfully"
+             );
+    
+             return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+        }
+
+        $response = array(
+            'status' => 'error',
+            'message' => "Office not found"
+         );
+
+         return $this->response->setStatusCode(Response::HTTP_NOT_FOUND)->setJSON($response);
     }
 }
