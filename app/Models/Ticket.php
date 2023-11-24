@@ -62,5 +62,5 @@ class Ticket extends Model
             'model' => 'App\Models\Office',
             'foreign_key' => 'office_id'
         ]
-    ]
+    ];
 }
