@@ -34,28 +34,118 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modalID">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Office Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="needs-validation" novalidate>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="code">Code</label>
+                                    <input type="text" class="form-control" id="code" name="code" placeholder="Enter Code" required>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid code.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid name.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
     </div>
 </div>
 <?= $this->endSection() ?>
 
 <?= $this->section('pagescript') ?>
 <script>
+    $(function(){
+        $('form').submit(function(e){
+            e.preventDefault();
+
+            let formdata = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+
+            let jsondata = JSON.stringify(formdata);
+
+            if(this.checkValidity()){
+                //create
+                $.ajax({
+                    url: "<?= base_url('offices'); ?>",
+                    type: "POST",
+                    data: jsondata,
+                    success: function(response) {
+                        $(document).Toasts('create', {
+                            class: 'bg-success',
+                            title: 'Success',
+                            body: JSON.stringify(response.message),
+                            autohide: true,
+                            delay: 3000
+                        });
+                        $('#modalID').modal('hide');
+                        table.ajax.reload();
+                    },
+                    error: function (reponse){
+                        $(document).Toasts('create', {
+                            class: 'bg-danger',
+                            title: 'Error',
+                            body: JSON.stringify(response.message),
+                            autohide: true,
+                            delay: 3000
+                        });
+                    }
+                });
+            }
+
+        })
+    });
+
     let table = $("#dataTable").DataTable({
         responsive: true,
         processing: true,
         serverSide: true,
         paging: true,
         lengthChange: true,
-        lengthMenu: [5,10,20,50],
+        lengthMenu: [5, 10, 20, 50],
         searching: true,
         ordering: true,
         info: true,
-        autoWidth:false,
-        ajax : {
+        autoWidth: false,
+        ajax: {
             url: "<?= base_url('offices/list'); ?>",
             type: "POST"
         },
-        columns : [{
+        columns: [{
                 data: "id",
             },
             {
@@ -64,7 +154,7 @@
             {
                 data: "name",
             },
-            { 
+            {
                 data: "",
                 defaultContent: `
                     <td>
@@ -77,6 +167,5 @@
 
 
     });
-
 </script>
 <?= $this->endSection() ?>
